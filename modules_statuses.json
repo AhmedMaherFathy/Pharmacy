@@ -1,0 +1,11 @@
+{
+    "Test": true,
+    "Admin": true,
+    "Social": true,
+    "Media": true,
+    "SocialMedia": true,
+    "Category": true,
+    "Product": true,
+    "Sales": true,
+    "Language": true
+}
