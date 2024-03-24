@@ -22,6 +22,3 @@ use Modules\Category\Http\Controllers\CategoryController;
 
 Route::apiResource('categories',CategoryController::class)->except('edit','create');
 
-// Route::get('setlocale1/{locale}',function($lang){
-//     Session::put('locale',$lang);
-// });

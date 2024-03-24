@@ -34,7 +34,7 @@ class CategoryController extends Controller
     public function show($id)
     {
         $data = Category::findOrFail($id);
-        return $this->successResponse(data:$data);
+        return $this->successResponse(data:CategoryResource::make($data));
     }
 
     public function update(CategoryRequest $request, $id)
