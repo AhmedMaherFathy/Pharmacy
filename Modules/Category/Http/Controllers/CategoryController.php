@@ -20,15 +20,13 @@ class CategoryController extends Controller
 
         return $this->paginatedResponse($data, CategoryResource::class);
         
-        // return $data;
-        // return $this->successResponse(data:$data);
     }
 
     public function store(CategoryRequest $request)
     {
         $created = Category::create($request->validated());
         if ($created)
-            return $this->successResponse(message:translate_word('category created'),code:Response::HTTP_CREATED);
+            return $this->successResponse(message:translate_success_message('category','created'),code:Response::HTTP_CREATED);
     }
 
     public function show($id)
@@ -40,12 +38,12 @@ class CategoryController extends Controller
     public function update(CategoryRequest $request, $id)
     {
         Category::findOrFail($id)->update($request->validated());
-        return $this->successResponse(message:translate_word("category updated"));
+        return $this->successResponse(message:translate_success_message('category','updated'));
     }
 
     public function destroy($id)
     {
         Category::findOrFail($id)->delete();
-        return $this->successResponse(message:translate_word('deleted'));
+        return $this->successResponse(message:translate_success_message('category','deleted'));
     }
 }

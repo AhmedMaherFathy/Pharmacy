@@ -2,6 +2,8 @@
 
 use App\Helpers\BaseTranslationHelper;
 use Modules\Category\Helpers\CategoryTranslationHelper;
+use Modules\Sales\Helpers\SalesTranslatorHelper;
+use Modules\SocialMedia\Helpers\SocialMediaTranslatorHelper;
 
 return [
     'created' => 'Created Successfully',
@@ -95,4 +97,6 @@ return [
     'finished' => 'Finished Successfully',
     ...BaseTranslationHelper::en(),
     ...CategoryTranslationHelper::en(),
+    ...SalesTranslatorHelper::en(),
+    ...SocialMediaTranslatorHelper::en(),
 ];

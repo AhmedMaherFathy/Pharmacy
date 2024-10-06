@@ -24,7 +24,7 @@ class SalesController extends Controller
     {
         $data = Sales::paginate(10);
         
-        return $this->successResponse(data:SalesResource::collection($data));
+        return $this->paginatedResponse($data,SalesResource::class);
     }
 
     public function store(SalesRequest $request)
@@ -32,22 +32,13 @@ class SalesController extends Controller
         $validated = $request->validated();
         $created = $this->salesService->store($validated);
         if(is_null($created))
-            return $this->successResponse(message:translate_word('created'));
-        return $this->errorResponse(message:$created);
+            return $this->successResponse(message:translate_success_message('sales','created'));
+        // return $this->errorResponse(message:$created);
     }
-
-    public function show($id)
-    {
-        //
-    }
-
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    public function destroy($id)
-    {
-        //
+    public function productMostSell(){
+        $products = Product::where(function ($query) {
+                                $query->has('sales');
+                            });
+                            
     }
 }

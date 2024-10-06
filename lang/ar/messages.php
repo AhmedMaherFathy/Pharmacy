@@ -2,9 +2,11 @@
 
 use App\Helpers\BaseTranslationHelper;
 use Modules\Category\Helpers\CategoryTranslationHelper;
+use Modules\Sales\Helpers\SalesTranslatorHelper;
+use Modules\SocialMedia\Helpers\SocialMediaTranslatorHelper;
 
 return [
-    'created' => 'تم الإنشاء بنجاح',
+    'created' => 'تم إنشائه بنجاح',
     'updated' => 'تم التحديث بنجاح',
     'deleted' => 'تم الحذف بنجاح',
     'reset' => 'تمت إعادة التعيين بنجاح',
@@ -95,4 +97,6 @@ return [
     'finished' => 'تم الانتهاء بنجاح',
     ...BaseTranslationHelper::ar(),
     ...CategoryTranslationHelper::ar(),
+    ...SalesTranslatorHelper::ar(),
+    ...SocialMediaTranslatorHelper::ar(),
 ];

@@ -47,7 +47,6 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->append([
             SetDefaultLocale::class,
             AlwaysAcceptJson::class,
-            // LocalizationMiddleware::class,
         ]);
         
         $middleware->api([
@@ -61,14 +60,13 @@ return Application::configure(basePath: dirname(__DIR__))
             ValidatePostSize::class,
             TrimStrings::class,
             ConvertEmptyStringsToNull::class,
-            // LocalizationMiddleware::class,
         ]);
         
         $middleware->alias([
-            'language'=>LocalizationMiddleware::class,
+            // 'language'=>LocalizationMiddleware::class,
             'auth' => Authenticate::class,
             'guest' => RedirectIfAuthenticated::class,
-            //'permission' => PermissionMiddleware::class,
+            // 'permission' => PermissionMiddleware::class,
             'account_must_be_active' => AccountMustBeActive::class,
             'must_be_verified' => MustBeVerified::class,
             'user_type_in' => CheckUserType::class,

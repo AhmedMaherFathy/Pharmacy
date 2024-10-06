@@ -10,22 +10,18 @@ use Modules\Product\Entities\Product;
 class SalesService{
     // use HttpResponse;
     public function store($validated){
-        // try {
-            // DB::beginTransaction();
-    
-            $sale = new Sales();
+            DB::transaction(function () use ($validated) {
+            $sale = new Sales(); //invoice
             $sale->sale_time = now(); 
             $sale->save();
-            $totalProfit = 0;
     
             $ids = [];
-
-            foreach($validated as $requestData)
+            foreach($validated['products'] as $requestData)
             {
                 $ids[$requestData['product_id']] = ['quantity' => $requestData['quantity']];
             }
 
-            info($ids);
+            // info($ids);
 
             // die;
 
@@ -36,46 +32,52 @@ class SalesService{
 
             $resultIds = $existingProducts->pluck('id')->toArray();
 
-            $index = 0;
+            $totalProfits = $index = 0;
 
             $errors = [];
 
             foreach($requestKeys as $key)
             {
-                if (! in_array($key, $resultIds))
-                {
-                    $errors["products.$index"] = "product not found";
+                // if (! in_array($key, $resultIds))
+                // {
+                //     $errors["products.$index"] = "product not found";
 
-                    throw new ValidationErrorsException($errors);
-                    // info($errors);
-                }
-
+                //     throw new ValidationErrorsException($errors);
+                //     // info($errors);
+                // }
+                // Validation
+                throw_if(
+                    !in_array($key, $resultIds), 
+                    ValidationErrorsException::class,
+                    ["products.$index" => "product not found"]
+                );
                 $index++;
             }
 
-            $totalProfits = $index = 0;
+            
 
             foreach($existingProducts as $product)
             {
-                if($product->quantity < $ids[$product->id]['quantity'])
-                {
-                    throw new ValidationErrorsException([
-                        "products.$index" => "Not enough quantity",
-                    ]);
-                }
-
-                $totalProfits+= ($product->sell_price - $product->buy_price) * $ids[$product->id]['quantity'];
-
+                // if($product->quantity < $ids[$product->id]['quantity'])
+                // {
+                //     throw new ValidationErrorsException([
+                //         "products.$index" => "Not enough quantity",
+                //     ]);
+                // }N
+                throw_if(
+                    $product->quantity < $ids[$product->id]['quantity'], 
+                    ValidationErrorsException::class,
+                    ["products.$index" => "Not enough quantity"]
+                );
+                $totalProfits += ($product->sell_price - $product->buy_price) * $ids[$product->id]['quantity'];
                 $index++;
             }
+            // info("total profit is".$totalProfits);
             
-            DB::transaction(function() use ($totalProfit, $ids, $existingProducts){
-                $sales = Sales::create([
-                    'sale_time' => now(),
-                    'profit' => $totalProfit,
-                ]);
+            // DB::transaction(function() use ($totalProfit, $ids, $existingProducts){
+                $sale->update(['profit' => $totalProfits]);
 
-                $sales->products()->attach($ids);
+                $sale->products()->attach($ids);
 
                 // foreach($existingProducts as $product)
                 // {

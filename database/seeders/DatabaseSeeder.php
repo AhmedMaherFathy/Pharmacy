@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Modules\Auth\Database\Seeders\UserSeeder;
 use Modules\Category\Database\Seeders\CategoryDatabaseSeeder;
 use Modules\Category\Entities\Category;
 
@@ -21,9 +22,10 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
-        Category::factory(10)->create();
+        // Category::factory(10)->create();
         $this->call([
-            CategoryDatabaseSeeder::class,
+            // CategoryDatabaseSeeder::class,
+            UserSeeder::class,
         ]);
     }
 }

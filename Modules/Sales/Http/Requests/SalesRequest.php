@@ -16,8 +16,9 @@ class SalesRequest extends FormRequest
     public function rules()
     {
         return [
-            '*.product_id' => 'required',
-            '*.quantity' => 'required|integer|min:1',
+            'products' => 'required|array',
+            'products.*.product_id' => 'required',
+            'products.*.quantity' => 'required|integer|min:1',
         ];  
     }
 

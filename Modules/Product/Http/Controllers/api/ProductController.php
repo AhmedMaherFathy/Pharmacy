@@ -3,14 +3,16 @@
 namespace Modules\Product\Http\Controllers\api;
 
 use App\Traits\HttpResponse;
-use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
-use Modules\Category\Entities\Category;
 use Modules\Product\Entities\Product;
-use Modules\Product\Http\Requests\ProductRequest;
+use Modules\Category\Entities\Category;
+use Illuminate\Contracts\Support\Renderable;
+use Modules\Product\Transformers\ProductResource;
 use Modules\Product\Services\ProductService;
+use Symfony\Component\HttpFoundation\Response;
+use Modules\Product\Http\Requests\ProductRequest;
 
 class ProductController extends Controller
 {
@@ -24,7 +26,8 @@ class ProductController extends Controller
     public function index()
     {
         $data = Product::paginate(10);
-        return $this->successResponse(data:$data);
+        // return $this->successResponse(data:$data);
+        return $this->paginatedResponse($data ,ProductResource::class);
     }
 
     public function store(ProductRequest $request)
@@ -37,7 +40,7 @@ class ProductController extends Controller
             return $this->errorResponse();
         }
         DB::commit();
-        return $this->successResponse(message:translate_word('created'));
+        return $this->successResponse(message:translate_word('created'),code:Response::HTTP_CREATED);
     }
 
     public function show($id)
